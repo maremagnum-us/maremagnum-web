@@ -1,0 +1,84 @@
+/*
+  Colores y tipografía de Mare Magnum: el ÚNICO sitio donde se definen.
+  Para cambiar de paleta, pon data-palette="2" o data-palette="3"
+  en la etiqueta <html> de cada página. Sin el atributo se usa la paleta 1.
+*/
+
+/* Paleta 1 · Mar Caribe (activa) */
+:root {
+  --c-dark: #0B3954;      /* oscuro: texto principal y bloques oscuros */
+  --c-main: #1F7FB6;      /* principal */
+  --c-accent: #2BB3B1;    /* acento turquesa */
+  --c-light: #CFE8F5;     /* claro */
+  --c-ground: #F4F9FC;    /* fondo */
+}
+
+/* Paleta 2 · Costa Serena */
+:root[data-palette="2"] {
+  --c-dark: #14304D;
+  --c-main: #3A6EA5;
+  --c-accent: #C9A55C;
+  --c-light: #DCE7F2;
+  --c-ground: #F7F8FA;
+}
+
+/* Paleta 3 · Brisa */
+:root[data-palette="3"] {
+  --c-dark: #123B5C;
+  --c-main: #4AA3DF;
+  --c-accent: #E9825A;
+  --c-light: #E3F2FC;
+  --c-ground: #FBFDFE;
+}
+
+/* Funciones de cada color (el resto de la web solo usa estas) */
+:root {
+  --ink: var(--c-dark);
+  --ink-soft: color-mix(in srgb, var(--c-dark) 78%, var(--c-ground));
+  --ground: var(--c-ground);
+  --paper: #FFFFFF;
+  --field-light: var(--c-light);
+  --field-dark: var(--c-dark);
+  --field-main: color-mix(in srgb, var(--c-main) 86%, var(--c-dark));
+  --on-dark: var(--c-ground);
+  --on-dark-soft: color-mix(in srgb, var(--c-ground) 80%, var(--c-dark));
+  --action: var(--c-dark);
+  --action-hover: color-mix(in srgb, var(--c-dark) 80%, var(--c-main));
+  --link: color-mix(in srgb, var(--c-main) 70%, var(--c-dark));
+  --highlight: var(--c-accent);
+  --error: #A3262A;
+
+  /* Olas: claro, principal y oscuro de la paleta */
+  --wave-1: var(--c-light);
+  --wave-2: var(--c-main);
+  --wave-3: var(--c-dark);
+
+  /* Venezuela (solo para la banderita) */
+  --ve-yellow: #FFCC00;
+  --ve-blue: #00247D;
+  --ve-red: #CF142B;
+
+  /* Tipografía */
+  --font-display: "Libre Baskerville", Baskerville, "Times New Roman", serif;
+  --font-text: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Cinco tamaños, ni uno más */
+  --size-display: clamp(2rem, 1.1rem + 4.6vw, 5.5rem);
+  --size-title: clamp(min(1.875rem, 8.5vw), 1.2rem + 2.6vw, 3.5rem);
+  --size-statement: clamp(1.375rem, 1.05rem + 1.25vw, 2.125rem);
+  --size-text: 1.0625rem;
+  --size-small: 0.875rem;
+
+  /* Espacio */
+  --margin: clamp(20px, 4vw, 56px);
+  --gap: clamp(16px, 2vw, 32px);
+  --section: clamp(88px, 6vw + 48px, 176px);
+  --radius: 999px;     /* botones: completamente redondos */
+
+  /* Movimiento */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --t-fast: 160ms;
+  --t-base: 280ms;
+  --t-slow: 900ms;
+}

@@ -41,7 +41,7 @@ section { padding-inline: max(var(--margin), env(safe-area-inset-left)) max(var(
 .logo-waves path:nth-child(even) { animation-duration: 8s; animation-direction: reverse; }
 @keyframes logo-wave { to { transform: translateX(-22.4px); } }
 
-.nav { display: flex; align-items: center; gap: 28px; }
+.nav { display: flex; align-items: center; gap: clamp(16px, 2.2vw, 28px); }
 .nav a:not(.btn) {
   position: relative; display: inline-flex; align-items: center; min-height: 44px;
   color: var(--text-soft); font-weight: 500; text-decoration: none; transition: color 200ms var(--ease-out);
@@ -60,7 +60,7 @@ section { padding-inline: max(var(--margin), env(safe-area-inset-left)) max(var(
 .menu-open .menu-btn line:last-child { transform: translateY(-3px) rotate(-45deg); }
 .menu-btn:active { transform: scale(0.94); }
 
-@media (max-width: 899px) {
+@media (max-width: 1099px) {
   .menu-btn { display: inline-grid; place-items: center; }
   .nav { display: none; }
   /* Menú superpuesto: flota sobre la página, no empuja el contenido */
@@ -314,8 +314,64 @@ section { padding-inline: max(var(--margin), env(safe-area-inset-left)) max(var(
   .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
 }
 
-/* ================= 4 · Sobre nosotros (papel) ================= */
-.about { padding-top: var(--section); }
+/* ================= 4 · Sobre nosotros ================= */
+.about { display: grid; grid-template-columns: minmax(0, 1fr); gap: 44px; padding-top: var(--section); overflow-x: clip; }
+.about-head { display: grid; gap: 22px; }
+.lead-big {
+  font-family: var(--font-display); font-weight: 380;
+  font-size: clamp(1.375rem, 1.05rem + 1.25vw, 2.125rem);
+  line-height: 1.25; letter-spacing: -0.01em;
+  color: var(--text); max-width: 34ch;
+}
+.people { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; justify-items: start; padding-bottom: 20px; }
+/* Dos fotos grandes, como copias pegadas: son la cara de la empresa */
+.person {
+  --rx: 0deg; --ry: 0deg; --lift: 0px; --mx: 50%; --my: 50%; --r: -2.5deg;
+  position: relative;
+  width: min(80%, 320px);
+  padding: 14px 14px 22px;
+  border-radius: 8px;
+  background: var(--paper); color: var(--paper-ink);
+  box-shadow: 0 40px 64px -30px rgba(0, 0, 0, 0.9);
+  transform: perspective(800px) translateY(var(--lift)) rotate(var(--r)) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 400ms var(--ease-out), box-shadow 400ms var(--ease-out);
+}
+.person-b { --r: 2.5deg; --d: 120ms; justify-self: end; }
+.person-photo {
+  display: grid; place-items: center;
+  aspect-ratio: 4 / 5; padding: 12px;
+  background: #E3DCCD;
+  box-shadow: inset 0 0 0 1px rgba(10, 26, 47, 0.12);
+  text-align: center;
+}
+.person figcaption { display: grid; gap: 4px; padding: 16px 4px 0; }
+.person figcaption strong { font-family: var(--font-display); font-weight: 500; font-size: 1.625rem; line-height: 1.1; letter-spacing: -0.01em; }
+.portrait-seal {
+  position: absolute; right: 10px; bottom: -16px;
+  display: grid; place-items: center;
+  width: 70px; height: 70px; border-radius: 50%;
+  background: var(--paper); color: var(--stamp);
+  border: 2px dashed var(--stamp);
+  box-shadow: 0 14px 22px -12px rgba(0, 0, 0, 0.8);
+  font-size: 0.6875rem; font-weight: 700; line-height: 1.15; letter-spacing: 0.12em; text-transform: uppercase; text-align: center;
+  transform: rotate(14deg);
+}
+@media (hover: hover) and (pointer: fine) { .person:hover { --lift: -8px; box-shadow: 0 50px 70px -30px rgba(0, 0, 0, 0.95); } }
+.about-side { display: grid; gap: 22px; align-content: center; max-width: 36rem; }
+.flag-ve { width: 28px; height: 19px; flex: none; border-radius: 2px; }
+.points h3 { display: flex; align-items: center; gap: 10px; }
+@media (min-width: 560px) {
+  .people { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; justify-items: center; }
+  .person { width: 100%; max-width: 330px; }
+  .person-b { margin-top: 48px; justify-self: center; }
+  .portrait-seal { right: -16px; }
+}
+@media (min-width: 1000px) {
+  .about { grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); column-gap: clamp(40px, 5vw, 88px); row-gap: 48px; align-items: center; }
+  .about-head { grid-column: 1 / -1; }
+}
+
+/* Hoja de papel de las páginas sencillas (privacidad y 404) */
 .paper {
   display: grid; gap: 28px;
   padding: clamp(24px, 5vw, 64px);
@@ -323,25 +379,6 @@ section { padding-inline: max(var(--margin), env(safe-area-inset-left)) max(var(
   background: var(--paper);
   color: var(--paper-ink);
   box-shadow: 0 60px 120px -60px rgba(0, 0, 0, 0.9);
-}
-.portrait-frame {
-  display: grid; place-items: center;
-  aspect-ratio: 4 / 5; max-width: 340px;
-  padding: 16px;
-  border-radius: 16px;
-  background: #E3DCCD;
-  box-shadow: inset 0 0 0 2px rgba(10, 26, 47, 0.1);
-  transform: rotate(-2deg);
-  transition: transform 500ms var(--ease-out);
-}
-@media (hover: hover) and (pointer: fine) { .portrait:hover .portrait-frame { transform: rotate(0deg) scale(1.02); } }
-.about-text { display: grid; gap: 18px; align-content: center; }
-.about-text .title { max-width: 16ch; }
-.spanish { display: flex; align-items: center; gap: 12px; font-weight: 600; }
-.flag-ve { width: 42px; height: 28px; flex: none; border-radius: 3px; }
-.about-fact { color: var(--paper-soft); }
-@media (min-width: 900px) {
-  .paper { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: center; column-gap: clamp(32px, 5vw, 72px); }
 }
 
 /* ================= 5 · Preguntas ================= */
@@ -483,21 +520,20 @@ section { padding-inline: max(var(--margin), env(safe-area-inset-left)) max(var(
   .js .desk { animation: deal 1100ms var(--ease-out) 250ms both; }
 
   /* Bloques: sus partes aparecen escalonadas */
-  .js [data-reveal] > *, .js [data-reveal].step, .js [data-reveal].qa {
+  .js [data-reveal] > *, .js [data-reveal].step {
     opacity: 0; transform: translateY(26px);
     transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out);
   }
-  .js [data-reveal].qa { transform: translateY(30px) rotate(1.5deg); }
-  .js [data-reveal].is-in > *, .js [data-reveal].step.is-in, .js [data-reveal].qa.is-in { opacity: 1; transform: none; }
+  .js [data-reveal].is-in > *, .js [data-reveal].step.is-in { opacity: 1; transform: none; }
   .js [data-reveal].is-in > :nth-child(2) { transition-delay: 80ms; }
   .js [data-reveal].is-in > :nth-child(3) { transition-delay: 160ms; }
   .js [data-reveal].is-in > :nth-child(n+4) { transition-delay: 220ms; }
-  .js .step.is-in:nth-child(2), .js .qa.is-in:nth-child(3n+2) { transition-delay: 90ms; }
-  .js .step.is-in:nth-child(3), .js .qa.is-in:nth-child(3n) { transition-delay: 180ms; }
-  /* El papel "Sobre nosotros" se posa como una hoja */
-  .js .paper[data-reveal] { opacity: 0; transform: translateY(40px) rotate(-1.2deg); transition: opacity 900ms var(--ease-out), transform 1000ms var(--ease-out); }
-  .js .paper[data-reveal] > * { opacity: 1; transform: none; }
-  .js .paper[data-reveal].is-in { opacity: 1; transform: none; }
+  .js .step.is-in:nth-child(2) { transition-delay: 90ms; }
+  .js .step.is-in:nth-child(3) { transition-delay: 180ms; }
+  /* Fichas con inclinación (foto y preguntas): se reparten con una animación que no pisa su inclinación */
+  .js [data-deal] { opacity: 0; }
+  .js [data-deal].is-in { opacity: 1; animation: deal-in 800ms var(--ease-out) var(--d, 0s) backwards; }
+  .qa:nth-child(3n+2) { --d: 90ms; } .qa:nth-child(3n) { --d: 180ms; }
 
   /* Tarjetas de documentos: se reparten y flotan */
   .js .cards .card { opacity: 0; transform: translateY(40px) rotate(calc(var(--tilt) * 4)); }
@@ -513,6 +549,7 @@ section { padding-inline: max(var(--margin), env(safe-area-inset-left)) max(var(
   .step.is-in .a-arrow { animation: nudge 3.6s var(--ease-in-out) infinite; }
   .step.is-in .a-check { animation: stamp 3.6s var(--ease-out) infinite; transform-origin: 104px 82px; }
 }
+@keyframes deal-in { from { opacity: 0; transform: translateY(34px) rotate(4deg) scale(0.97); } }
 @keyframes rise { from { opacity: 0; transform: translateY(28px); } }
 @keyframes deal { from { opacity: 0; transform: translateY(60px) rotate(6deg) scale(0.96); } }
 @keyframes type { 0% { stroke-dashoffset: 60; } 40%, 85% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 0; opacity: 0; } }
@@ -523,8 +560,8 @@ section { padding-inline: max(var(--margin), env(safe-area-inset-left)) max(var(
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .grain, .logo-waves path { animation: none; }
-  .js [data-reveal] > *, .js [data-reveal].step, .js [data-reveal].qa, .js .paper[data-reveal] { opacity: 0; transition: opacity 400ms ease; }
-  .js [data-reveal].is-in > *, .js [data-reveal].step.is-in, .js [data-reveal].qa.is-in, .js .paper[data-reveal].is-in { opacity: 1; }
+  .js [data-reveal] > *, .js [data-reveal].step, .js [data-deal] { opacity: 0; transition: opacity 400ms ease; }
+  .js [data-reveal].is-in > *, .js [data-reveal].step.is-in, .js [data-deal].is-in { opacity: 1; }
   .blurred { filter: none; color: var(--text); }
   .card .en { position: static; opacity: 1; transform: none; }
   .card .es { filter: none; font-size: 0.9375rem; opacity: 0.75; }
@@ -538,8 +575,8 @@ section { padding-inline: max(var(--margin), env(safe-area-inset-left)) max(var(
 .paper > *, .contact > *, .firms > *, .docs > *, .hero > * { min-width: 0; }
 .card small, .card .es, .card .en { overflow-wrap: anywhere; hyphens: auto; }
 .title .mm { white-space: normal; overflow-wrap: anywhere; }
-.about-text .title { max-width: none; }
-.about-text .title .mm { font-size: 0.8em; }
+.about-head .title { max-width: none; }
+.about-head .title .mm { font-size: 0.8em; }
 @media (min-width: 900px) and (max-width: 1199px) {
   .contact .title { font-size: clamp(2rem, 1rem + 2.6vw, 3rem); }
 }
@@ -630,3 +667,46 @@ section { padding-inline: max(var(--margin), env(safe-area-inset-left)) max(var(
 /* La lupa crece más que la pantalla al hacer scroll: se recorta en la portada y se oculta cuando ya no se ve */
 .hero { overflow-x: clip; }
 .lens { display: var(--lens-d, block); }
+
+/* Frase de la portada: "Based in Texas, working nationwide." en su propia línea */
+.lead-line { display: block; margin-top: 0.4em; }
+.nobr { white-space: nowrap; }
+
+/* Enlace de idioma */
+.nav a.lang-link { padding: 0 14px; border-radius: var(--radius); box-shadow: inset 0 0 0 1.5px var(--line); font-size: 0.9375rem; }
+.nav a.lang-link::after { display: none; }
+@media (hover: hover) and (pointer: fine) { .nav a.lang-link:hover { box-shadow: inset 0 0 0 1.5px var(--aqua); } }
+
+/* Formulario: un mensaje de error en un campo no debe estirar los campos de al lado */
+.field { align-content: start; }
+.field-row { align-items: start; }
+
+/* ================= Selector de idioma ================= */
+.lang-flag { width: 22px; height: 15px; flex: none; border-radius: 2px; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22); }
+.nav a.lang-link { gap: 9px; }
+.lang-link-mobile { display: none; }
+.foot-cols a.foot-lang { gap: 9px; }
+@media (max-width: 1099px) {
+  .nav a.lang-link { display: none; }
+  .lang-link-mobile {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-left: auto; min-height: 44px; padding: 0 14px;
+    border-radius: var(--radius);
+    background: rgba(16, 38, 63, 0.7);
+    box-shadow: inset 0 0 0 1.5px var(--line);
+    color: var(--text); font-size: 0.875rem; font-weight: 650; letter-spacing: 0.04em; text-decoration: none;
+    transition: box-shadow 250ms var(--ease-out), transform 160ms var(--ease-out);
+  }
+  .lang-link-mobile:active { transform: scale(0.96); }
+}
+@media (max-width: 399px) {
+  .top { gap: 8px; }
+  .lang-link-mobile { padding: 0 11px; gap: 6px; }
+}
+
+@media (max-width: 389px) {
+  .top { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+  .top .logo { gap: 10px; }
+  .top .logo-icon { width: 32px; height: 32px; }
+  .top .logo-word { font-size: 0.875rem; letter-spacing: 0.12em; }
+}

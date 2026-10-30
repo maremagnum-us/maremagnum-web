@@ -5,6 +5,16 @@
   var doc = document, root = doc.documentElement;
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+  /* Textos que escribe el JavaScript, según el idioma de la página */
+  var I18N = {
+    en: { menu: "Menu", closeMenu: "Close menu", noMatch: "No match on our list.", one: "1 document matches.", many: function (n) { return n + " documents match."; },
+      check: "Please check this field.",
+      err: { "f-name": "Please tell us your name.", "f-email": "Please enter an email we can reply to, like name@example.com.", "f-doc": "Please tell us what kind of document it is.", "f-pages": "Please enter a whole number of pages, from 1 to 999.", "f-audience": "Please choose: law firm or individual." } },
+    es: { menu: "Menú", closeMenu: "Cerrar menú", noMatch: "No está en nuestra lista.", one: "1 documento coincide.", many: function (n) { return n + " documentos coinciden."; },
+      check: "Revisa este campo.",
+      err: { "f-name": "Dinos cómo te llamas.", "f-email": "Escribe un correo al que podamos responderte, como nombre@ejemplo.com.", "f-doc": "Dinos qué tipo de documento es.", "f-pages": "Escribe un número entero de páginas, del 1 al 999.", "f-audience": "Elige: firma de abogados o particular." } }
+  };
+  var T = I18N[(root.lang || "en").slice(0, 2)] || I18N.en;
   var vw = window.innerWidth, vh = window.innerHeight;
   window.addEventListener("resize", function () { vw = window.innerWidth; vh = window.innerHeight; });
   function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
@@ -32,7 +42,7 @@
   function setMenu(open) {
     doc.body.classList.toggle("menu-open", open);
     menuBtn.setAttribute("aria-expanded", String(open));
-    menuBtn.setAttribute("aria-label", open ? "Close menu" : "Menu");
+    menuBtn.setAttribute("aria-label", open ? T.closeMenu : T.menu);
   }
   if (menuBtn) {
     menuBtn.addEventListener("click", function () { setMenu(!doc.body.classList.contains("menu-open")); });
@@ -70,7 +80,7 @@
       if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); }
     });
   }, { rootMargin: "0px 0px -10% 0px", threshold: 0.08 }) : null;
-  var revealables = doc.querySelectorAll("[data-reveal], .cards, .step");
+  var revealables = doc.querySelectorAll("[data-reveal], [data-deal], .cards, .step");
   revealables.forEach(function (el) { if (io) io.observe(el); else el.classList.add("is-in"); });
 
   /* ---------- La marea: líneas de ola que se calman donde está el cursor ---------- */
@@ -286,8 +296,8 @@
         if (hit) shown++;
       });
       if (!q) { lookupStatus.textContent = ""; lookupAsk.hidden = true; }
-      else if (!shown) { lookupStatus.textContent = "No match on our list."; lookupAsk.hidden = false; }
-      else { lookupStatus.textContent = shown === 1 ? "1 document matches." : shown + " documents match."; lookupAsk.hidden = true; }
+      else if (!shown) { lookupStatus.textContent = T.noMatch; lookupAsk.hidden = false; }
+      else { lookupStatus.textContent = shown === 1 ? T.one : T.many(shown); lookupAsk.hidden = true; }
     });
     if (askLink && docInput) askLink.addEventListener("click", function () { if (lookup.value.trim()) docInput.value = lookup.value.trim(); });
   }
@@ -301,19 +311,13 @@
     });
   });
   if (form) {
-    var messages = {
-      "f-name": "Please tell us your name.",
-      "f-email": "Please enter an email we can reply to, like name@example.com.",
-      "f-doc": "Please tell us what kind of document it is.",
-      "f-pages": "Please enter a whole number of pages, from 1 to 999.",
-      "f-audience": "Please choose: law firm or individual."
-    };
+    var messages = T.err;
     var radios = form.querySelectorAll('input[name="audience"]');
     var errBox = function (el) { return doc.getElementById((el.name === "audience" ? "f-audience" : el.id) + "-error"); };
     var showError = function (el) {
       var id = el.name === "audience" ? "f-audience" : el.id, box = errBox(el);
       if (!box) return;
-      box.textContent = messages[id] || "Please check this field.";
+      box.textContent = messages[id] || T.check;
       (el.name === "audience" ? radios : [el]).forEach(function (x) { x.setAttribute("aria-invalid", "true"); x.setAttribute("aria-describedby", id + "-error"); });
     };
     var clearError = function (el) {

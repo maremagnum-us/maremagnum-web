@@ -1,136 +1,125 @@
-/* Tipografías guardadas dentro de la web (sin llamadas a Google) */
-@font-face {
-  font-family: "DM Sans";
-  src: url("/assets/fonts/dm-sans-latin.woff2") format("woff2");
-  font-weight: 400 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Libre Baskerville";
-  src: url("/assets/fonts/libre-baskerville-latin.woff2") format("woff2");
-  font-weight: 400 700;
-  font-style: normal;
-  font-display: swap;
-}
+/* Tipografías alojadas en la propia web */
+@font-face { font-family: "Fraunces"; src: url("/assets/fonts/fraunces.woff2") format("woff2"); font-weight: 300 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Instrument Sans"; src: url("/assets/fonts/instrument-sans.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
+@font-face { font-family: "Montserrat"; src: url("/assets/fonts/montserrat.woff2") format("woff2"); font-weight: 500 700; font-display: swap; }
 
-/* Base */
 *, *::before, *::after { box-sizing: border-box; }
 html {
   -webkit-tap-highlight-color: transparent;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-behavior: smooth;
-  scroll-padding-top: 88px;
-  background: var(--ground);
-}
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  scroll-padding-top: 84px;
+  background: var(--abyss);
+  color-scheme: dark;
 }
 body {
   margin: 0;
   min-height: 100svh;
-  background: var(--ground);
-  color: var(--ink);
+  background: var(--abyss);
+  color: var(--text);
   font-family: var(--font-text);
   font-size: var(--size-text);
-  line-height: 1.55;
-  font-optical-sizing: auto;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-tap-highlight-color: transparent;
   overflow-x: clip;
 }
-h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; }
+h1, h2, h3, p, ul, ol, dl, dd, figure, blockquote { margin: 0; }
 ul, ol { padding: 0; list-style: none; }
 img, svg { display: block; max-width: 100%; }
-img { height: auto; }
 a, button, label, summary { touch-action: manipulation; }
-a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
-strong { font-weight: 650; }
+a { color: inherit; text-underline-offset: 0.2em; }
 button, input, textarea, select { font: inherit; color: inherit; }
-
 h1, h2, h3 { text-wrap: balance; overflow-wrap: break-word; }
-p, dd, li { text-wrap: pretty; }
+p, li, dd { text-wrap: pretty; }
+::selection { background: var(--brand); color: var(--abyss); }
+:focus-visible { outline: 3px solid var(--aqua); outline-offset: 3px; border-radius: 6px; }
 
-::selection { background: var(--c-light); color: var(--c-dark); }
-
-:focus-visible {
-  outline: 3px solid var(--c-main);
-  outline-offset: 3px;
-  border-radius: 4px;
+/* Nombre de marca: siempre MAREMAGNUM, en color de marca */
+.mm {
+  font-family: var(--font-brand);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  font-size: 0.92em;
+  color: var(--brand);
+  white-space: nowrap;
 }
+.on-paper .mm { color: var(--brand-on-paper); }
 
 .skip {
-  position: absolute;
-  left: var(--margin);
-  top: -100px;
-  z-index: 100;
-  padding: 12px 18px;
-  background: var(--action);
-  color: var(--on-dark);
-  border-radius: var(--radius);
-  text-decoration: none;
+  position: absolute; left: var(--margin); top: -100px; z-index: 100;
+  padding: 12px 18px; border-radius: var(--radius);
+  background: var(--brand); color: var(--abyss); font-weight: 650; text-decoration: none;
 }
 .skip:focus { top: 12px; }
 
-/* Botones (uno solo en toda la web, completamente redondos) */
-.button {
+/* Botones: se inclinan hacia el ratón, se elevan y brillan */
+.btn {
+  --rx: 0deg; --ry: 0deg; --lift: 0px; --mx: 50%; --my: 50%;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
+  max-width: 100%;
   min-height: 52px;
-  padding: 0 28px;
+  padding: 12px 26px;
   border: 0;
   border-radius: var(--radius);
-  background: var(--action);
-  color: var(--on-dark);
-  font-weight: 600;
-  font-size: var(--size-text);
-  max-width: 100%;
-  padding-block: 12px;
+  background: var(--brand);
+  color: var(--abyss);
+  font-weight: 650;
   line-height: 1.2;
   text-align: center;
   text-decoration: none;
-  text-wrap: balance;
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
-  touch-action: manipulation;
-  transition: background-color var(--t-base) var(--ease-out), transform var(--t-fast) var(--ease-out);
+  transform: perspective(500px) translateY(var(--lift)) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 260ms var(--ease-out), box-shadow 260ms var(--ease-out), background-color 200ms;
 }
-.button:active { transform: scale(0.97); }
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(120px circle at var(--mx) var(--my), rgba(255, 255, 255, 0.45), transparent 60%);
+  opacity: 0;
+  transition: opacity 260ms var(--ease-out);
+}
+.btn svg { flex: none; transition: transform 260ms var(--ease-out); }
+.btn-ghost { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1.5px var(--line); }
+.btn-small { min-height: 44px; padding: 8px 18px; font-size: 0.9375rem; }
+.btn-ink { background: var(--paper-ink); color: var(--paper); }
 @media (hover: hover) and (pointer: fine) {
-  .button:hover { background: var(--action-hover); }
+  .btn:hover { --lift: -3px; box-shadow: 0 14px 34px -12px rgba(20, 152, 213, 0.75), 0 0 0 1px rgba(95, 224, 208, 0.35); }
+  .btn:hover::before { opacity: 1; }
+  .btn:hover svg { transform: translateX(4px); }
+  .btn-ghost:hover { box-shadow: inset 0 0 0 1.5px var(--aqua), 0 10px 30px -14px rgba(95, 224, 208, 0.6); }
+  .btn-ink:hover { box-shadow: 0 14px 30px -14px rgba(10, 26, 47, 0.7); }
 }
-.button-small { min-height: 44px; padding: 0 18px; }
-.button-light, .button-on-dark { background: var(--ground); color: var(--ink); }
-@media (hover: hover) and (pointer: fine) {
-  .button-light:hover, .button-on-dark:hover { background: var(--c-light); }
-}
-
-.text-link {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  color: var(--link);
-  font-weight: 600;
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-}
+.btn:active { transform: perspective(500px) scale(0.97); transition-duration: 120ms; }
 
 /* Marcadores de datos pendientes: visibles a propósito */
 .pending {
   display: inline;
-  padding: 0.1em 0.35em;
-  background: #FFF1B8;
-  color: #5A4400;
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  background: #FFE89A;
+  color: #4A3800;
   font-family: var(--font-text);
-  font-size: var(--size-small);
+  font-size: 0.8125rem;
   font-weight: 600;
+  font-style: normal;
+  letter-spacing: 0;
   line-height: 1.5;
+  text-transform: none;
   overflow-wrap: anywhere;
+  white-space: normal;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }

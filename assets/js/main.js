@@ -14,7 +14,17 @@
 
   /* ---------- Cabecera y menú superpuesto ---------- */
   var top = doc.querySelector(".top");
-  function onScrollHeader() { top.classList.toggle("is-scrolled", window.scrollY > 24); }
+  var toTop = doc.querySelector(".to-top");
+  var hero = doc.querySelector(".hero");
+  function onScrollHeader() {
+    top.classList.toggle("is-scrolled", window.scrollY > 24);
+    if (toTop && hero) toTop.classList.toggle("is-visible", hero.getBoundingClientRect().bottom < vh * 0.55);
+  }
+  if (toTop) toTop.addEventListener("click", function () {
+    window.scrollTo({ top: 0 });
+    var logo = doc.querySelector(".top .logo");
+    if (logo) logo.focus({ preventScroll: true });
+  });
   window.addEventListener("scroll", onScrollHeader, { passive: true });
   onScrollHeader();
 
@@ -158,6 +168,7 @@
     sheet.style.setProperty("--y", (lens.y * 100).toFixed(2) + "%");
     sheet.style.setProperty("--r", (lens.r * w).toFixed(1) + "px");
     sheet.style.setProperty("--lens-o", lens.r > 1 ? "0" : "1");
+    sheet.style.setProperty("--lens-d", lens.r > 1 ? "none" : "block");
   }
 
   /* ---------- Para firmas: los papeles se ordenan en un documento ---------- */

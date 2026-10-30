@@ -128,7 +128,16 @@ section { padding-inline: max(var(--margin), env(safe-area-inset-left)) max(var(
 .layer-en .sheet-meta { color: var(--brand-on-paper); opacity: 1; font-weight: 600; }
 .sheet-title { font-family: var(--font-display); font-weight: 600; font-size: 1.3em; line-height: 1.2; letter-spacing: -0.01em; }
 .sheet-foot { display: flex; justify-content: space-between; align-items: end; gap: 12px; margin-top: 6%; }
-.seal { width: 5.4em; height: 5.4em; border-radius: 50%; border: 2px dashed var(--stamp); color: var(--stamp); display: grid; place-items: center; font-weight: 700; font-size: 0.62em; letter-spacing: 0.1em; text-transform: uppercase; text-align: center; transform: rotate(-12deg); }
+.seal {
+  flex: none; display: grid; place-items: center;
+  width: 6.4em; height: 6.4em; border-radius: 50%;
+  border: 2px dashed var(--stamp); color: var(--stamp);
+  font-size: 0.625rem; font-weight: 700; line-height: 1.15; letter-spacing: 0.03em; text-transform: uppercase; text-align: center;
+  transform: rotate(-12deg);
+}
+/* Bajo la lupa la firma y el sello se ven con claridad */
+.layer-en .sheet-sig { color: #1F3F7C; }
+.seal-clear { border-style: solid; box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 4px var(--stamp); }
 .bracket { color: var(--brand-on-paper); font-weight: 600; }
 .lens {
   position: absolute; left: var(--x); top: var(--y);
